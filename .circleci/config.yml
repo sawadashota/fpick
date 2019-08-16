@@ -3,9 +3,10 @@ version: 2.1
 executors:
   golang-executor:
     docker:
-      - image: circleci/golang:1.12.4
+      - image: circleci/golang:1.12
     environment:
       GO111MODULE: "on"
+      GOPROXY: https://proxy.golang.org
       TEST_RESULTS: /tmp/test-results
     working_directory: /go/src/github.com/sawadashota/fpick
   goreleaser-executor:
@@ -13,6 +14,7 @@ executors:
       - image: goreleaser/goreleaser:v0.106
     environment:
       GO111MODULE: "on"
+      GOPROXY: https://proxy.golang.org
     working_directory: /go/src/github.com/sawadashota/fpick
 commands:
   install-dependencies:
