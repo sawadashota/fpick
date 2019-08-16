@@ -2,6 +2,9 @@ package cmd
 
 import (
 	"errors"
+	"fmt"
+	"os"
+	"strings"
 
 	"github.com/sawadashota/fpick"
 	"github.com/spf13/cobra"
@@ -57,7 +60,20 @@ func RootCmd() *cobra.Command {
 				opts = append(opts, fpick.OutputFlatDirOption)
 			}
 
-			return c.Pick(matcher, opts...)
+			fs, err := c.Pick(matcher, opts...)
+			if err != nil {
+				return err
+			}
+
+			for _, f := range fs {
+				relPath := strings.TrimPrefix(f.Path, src)
+				relPath = strings.TrimPrefix(relPath, "/")
+				_, _ = fmt.Fprintf(os.Stdout, "copied %s\n", relPath)
+			}
+
+			_, _ = fmt.Fprintf(os.Stdout, "complete coping %d files\n", len(fs))
+
+			return nil
 		},
 	}
 

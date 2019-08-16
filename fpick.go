@@ -156,10 +156,10 @@ func OutputFlatDirOption(path string) string {
 }
 
 // Pick files and copy to another directory
-func (c *Client) Pick(match FileMatcher, opts ...OutputOption) error {
+func (c *Client) Pick(match FileMatcher, opts ...OutputOption) ([]*File, error) {
 	fs, err := c.FileList(match)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	for _, f := range fs {
@@ -172,8 +172,8 @@ func (c *Client) Pick(match FileMatcher, opts ...OutputOption) error {
 
 		dst := filepath.Join(c.dst, dir)
 		if err := f.Copy(dst); err != nil {
-			return err
+			return nil, err
 		}
 	}
-	return nil
+	return fs, nil
 }

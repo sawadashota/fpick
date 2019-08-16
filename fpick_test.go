@@ -277,7 +277,7 @@ func TestClient_Pick(t *testing.T) {
 				return
 			}
 
-			if err := client.Pick(c.args.match, c.args.opts...); (err != nil) != c.wantErr {
+			if _, err := client.Pick(c.args.match, c.args.opts...); (err != nil) != c.wantErr {
 				t.Errorf("Client.Pick() error = %v, wantErr %v", err, c.wantErr)
 				return
 			}
